@@ -99,14 +99,11 @@ scikit-learn
 
 # Conclusion
 
-Analisis menunjukkan bahwa dropout masih menjadi isu krusial, dengan kinerja akademik awal, faktor ekonomi, dan dukungan keluarga sebagai penentu utama. Program beasiswa juga terbukti efektif meningkatkan kelulusan.
+Fenomena dropout mahasiswa di Jaya Jaya Institut dipengaruhi oleh sejumlah faktor yang dapat dikelompokkan ke dalam lima kategori utama, yakni karakteristik demografis, latar belakang pendidikan, kondisi ekonomi, situasi keluarga dan sosial, serta pencapaian akademik.
 
-## Tantangan:
-Institusi menghadapi tantangan dalam deteksi dini, keterbatasan pendampingan akademik, kesenjangan akses sumber daya, dan perlunya sistem monitoring yang lebih optimal.
+Mahasiswa yang berisiko lebih tinggi untuk tidak menyelesaikan studi umumnya memiliki usia yang lebih tua pada saat pendaftaran, termasuk dalam kategori over 23 years old atau mahasiswa transfer, serta mengambil program studi Manajemen kelas malam atau Teknik Informatika. Selain itu, mahasiswa dengan nilai awal masuk (admission grade) yang rendah serta yang tidak memperoleh beasiswa juga menunjukkan kecenderungan yang lebih besar untuk mengalami dropout.
 
-## Peluang:
-Ada peluang besar untuk memanfaatkan AI dalam prediksi risiko, memperkuat program mentoring, meningkatkan kolaborasi dengan orang tua, serta mengoptimalkan program beasiswa.
-
+Dari sisi latar belakang keluarga, mahasiswa yang berasal dari lingkungan dengan dukungan pendidikan yang rendah—terutama apabila tingkat pendidikan ayah dan ibu tidak diketahui—juga memiliki potensi lebih tinggi untuk keluar dari institusi sebelum menyelesaikan program studi. Secara umum, mahasiswa yang mengalami dropout menunjukkan performa akademik yang cenderung lebih rendah dibandingkan rekan-rekan mereka yang melanjutkan studi hingga lulus.
 
 # Rekomendasi Action Items Berdasarkan Analisis Dashboard
 
@@ -225,13 +222,7 @@ Berdasarkan analisis dashboard yang telah dibuat, berikut adalah beberapa temuan
    - Peningkatan akses teknologi
    - Pengembangan ruang kolaborasi
 
-## 🎓 Kesimpulan
-
-Implementasi action items ini diharapkan dapat:
-1. Menurunkan tingkat dropout secara signifikan
-2. Meningkatkan tingkat kelulusan
-3. Meningkatkan kualitas lulusan
-4. Meningkatkan kepuasan stakeholder
-
-Semua program dan inisiatif harus dievaluasi secara berkala dan disesuaikan berdasarkan hasil dan feedback yang diterima. 
+# Email dan password Metabase
+- **Email**: root@mail.com 
+- **Password**: root123 
 
