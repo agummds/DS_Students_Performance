@@ -91,10 +91,11 @@ streamlit run app.py
 
 File `requirements.txt` berisi semua dependensi yang diperlukan:
 ```
-streamlit
-pandas
-numpy
-scikit-learn
+matplotlib==3.8.0
+numpy==1.25.2
+pandas==2.1.4
+seaborn==0.13.0
+streamlit==1.30.0
 ```
 
 # Conclusion
