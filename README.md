@@ -62,7 +62,7 @@ Aplikasi ini telah di-deploy ke Streamlit Community Cloud dan dapat diakses mela
 ### 🛠️ Local Development
 
 ### Prerequisites
-- Python 3.9 atau lebih baru
+- Python 3.12.7
 - pip (Python package manager)
 
 ### Installation
@@ -72,17 +72,18 @@ Aplikasi ini telah di-deploy ke Streamlit Community Cloud dan dapat diakses mela
 git clone https://github.com/agummds/DS_Students_Performance
 cd DS_Students_Performance
 ```
+2. Aktifkan virtual environment
 
-2. Install dependencies:
+3. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Pastikan file-file berikut ada di direktori yang sama dengan `app.py`:
+4. Pastikan file-file berikut ada di direktori yang sama dengan `app.py`:
    - `model.pkl` (model machine learning)
    - `data_agum.csv` (dataset)
 
-4. Jalankan aplikasi secara lokal:
+5. Jalankan aplikasi secara lokal:
 ```bash
 streamlit run app.py
 ```

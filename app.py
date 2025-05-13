@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import pickle
 import numpy as np
+from sklearn.preprocessing import OneHotEncoder
 
 # Set page config
 st.set_page_config(
@@ -30,7 +31,7 @@ def load_model():
             model = pickle.load(file)
         return model
     except Exception as e:
-        st.error("Error loading model. Please make sure 'model.pkl' exists in the correct location.")
+        st.error(f"Error loading model: {str(e)}")
         return None
 
 # Load the data
@@ -213,6 +214,16 @@ if model is not None and data is not None:
             input_data['Ratio_approved_1st_sem'] = input_data['Curricular_units_1st_sem_approved'] / input_data['Curricular_units_1st_sem_enrolled'].replace(0, 1)
             input_data['Ratio_approved_2nd_sem'] = input_data['Curricular_units_2nd_sem_approved'] / input_data['Curricular_units_2nd_sem_enrolled'].replace(0, 1)
             
+            # One-hot encode categorical variables
+            categorical_cols = ['Course', 'Mothers_qualification', 'Fathers_qualification', 
+                              'Mothers_occupation', 'Fathers_occupation']
+            
+            for col in categorical_cols:
+                # Create dummy variables
+                dummies = pd.get_dummies(input_data[col], prefix=col)
+                # Drop the original column and add the dummy variables
+                input_data = pd.concat([input_data.drop(col, axis=1), dummies], axis=1)
+            
             # Make prediction
             prediction = model.predict(input_data)
             
@@ -296,5 +307,5 @@ else:
     1. 'model.pkl' - The trained model file
     2. 'data_agum.csv' - The dataset file
     
-    Both files should be in the same directory as this application.
+    All files should be in the same directory as this application.
     """) 
