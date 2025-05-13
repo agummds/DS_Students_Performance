@@ -35,7 +35,7 @@ Di sini untuk melakukan proses saya sepenuhnya menggunakan Google Colab. Baru ke
 1. Buka terminal di VSCODE.
 2. Jalankan perintah berikut.
 ```
- conda create --name submissionds python==3.12.4
+ conda create --name submissionds python==3.9.21
 ```
 3. Jalankan perintah kedua
 ```
@@ -62,7 +62,7 @@ Aplikasi ini telah di-deploy ke Streamlit Community Cloud dan dapat diakses mela
 ### 🛠️ Local Development
 
 ### Prerequisites
-- Python 3.8 atau lebih baru
+- Python 3.9 atau lebih baru
 - pip (Python package manager)
 
 ### Installation
@@ -79,7 +79,7 @@ pip install -r requirements.txt
 ```
 
 3. Pastikan file-file berikut ada di direktori yang sama dengan `app.py`:
-   - `modelku.pkl` (model machine learning)
+   - `model.pkl` (model machine learning)
    - `data_agum.csv` (dataset)
 
 4. Jalankan aplikasi secara lokal:
@@ -91,11 +91,12 @@ streamlit run app.py
 
 File `requirements.txt` berisi semua dependensi yang diperlukan:
 ```
-matplotlib==3.8.0
-numpy==1.25.2
-pandas==2.1.4
-seaborn==0.13.0
 streamlit==1.30.0
+pandas==2.1.4
+numpy==1.25.2
+matplotlib==3.7.2
+seaborn==0.12.2
+scikit-learn==1.2.2
 ```
 
 # Conclusion
