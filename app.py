@@ -26,11 +26,11 @@ Please fill in the student's information below to get a prediction.
 @st.cache_resource
 def load_model():
     try:
-        with open('modelku.pkl', 'rb') as file:
+        with open('model.pkl', 'rb') as file:
             model = pickle.load(file)
         return model
     except Exception as e:
-        st.error("Error loading model. Please make sure 'modelku.pkl' exists in the correct location.")
+        st.error("Error loading model. Please make sure 'model.pkl' exists in the correct location.")
         return None
 
 # Load the data
@@ -293,7 +293,7 @@ else:
     ❌ Required files are missing or cannot be loaded.
     
     Please make sure you have:
-    1. 'modelku.pkl' - The trained model file
+    1. 'model.pkl' - The trained model file
     2. 'data_agum.csv' - The dataset file
     
     Both files should be in the same directory as this application.
