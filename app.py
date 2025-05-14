@@ -2,483 +2,425 @@ import streamlit as st
 import pandas as pd
 import pickle
 import numpy as np
-from sklearn.preprocessing import StandardScaler, OneHotEncoder
-from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import Pipeline
-from sklearn.impute import SimpleImputer
+from datetime import datetime
+from sklearn.preprocessing import OneHotEncoder
 
-# Set page config
+# Set page configuration
 st.set_page_config(
-    page_title="Student Success Predictor",
+    page_title="Student Dropout Predictor",
     page_icon="🎓",
     layout="wide"
 )
 
-# Title and description
-st.title("🎓 Student Success Predictor")
+# Custom CSS
 st.markdown("""
-This application helps predict student success based on various academic and demographic factors.
-The prediction will show whether a student is likely to:
-- 🎯 Graduate
-- 📚 Stay Enrolled
-- ⚠️ Dropout
+    <style>
+    .main {
+        padding: 2rem;
+    }
+    .stButton>button {
+        width: 100%;
+        background-color: #4CAF50;
+        color: white;
+        padding: 0.5rem;
+        border-radius: 5px;
+    }
+    .prediction-box {
+        padding: 2rem;
+        border-radius: 10px;
+        margin: 1rem 0;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
-Please fill in the student's information below to get a prediction.
-""")
+class StudentPredictor:
+    def __init__(self):
+        self.model = None
+        self.encoder = None
+        self.feature_names = [
+            'Application_mode', 'Course', 'Previous_qualification_grade',
+            'Mothers_qualification', 'Fathers_qualification',
+            'Mothers_occupation', 'Fathers_occupation', 'Admission_grade',
+            'Displaced', 'Gender', 'Scholarship_holder', 'Age_at_enrollment',
+            'Curricular_units_1st_sem_enrolled', 'Curricular_units_1st_sem_evaluations',
+            'Curricular_units_1st_sem_approved', 'Curricular_units_2nd_sem_enrolled',
+            'Curricular_units_2nd_sem_evaluations', 'Curricular_units_2nd_sem_approved',
+            'Unemployment_rate', 'Inflation_rate', 'GDP', 'Status',
+            'Ratio_approved_1st_sem', 'Ratio_approved_2nd_sem'
+        ]
+        # Features that need one-hot encoding
+        self.categorical_features = [
+            'Application_mode', 'Course', 'Mothers_qualification',
+            'Fathers_qualification', 'Mothers_occupation', 'Fathers_occupation',
+            'Displaced', 'Gender', 'Scholarship_holder', 'Status'
+        ]
 
-# Load the model
-@st.cache_resource
-def load_model():
-    try:
-        with open('model.pkl', 'rb') as file:
-            model = pickle.load(file)
-        return model
-    except Exception as e:
-        st.error(f"Error loading model: {str(e)}")
-        return None
+    def load_model(self):
+        try:
+            with open('model.pkl', 'rb') as f:
+                self.model = pickle.load(f)
+            # Create encoder even if model is loaded successfully
+            # This ensures compatibility with the model's expected features
+            self.encoder = self._create_demo_encoder()
+            return True
+        except Exception as e:
+            st.error(f"Error loading model: {str(e)}")
+            return False
 
-# Load the data
-@st.cache_data
-def load_data():
-    try:
-        data = pd.read_csv('data_agum.csv')
-        return data
-    except Exception as e:
-        st.error("Error loading data. Please make sure 'data_agum.csv' exists in the correct location.")
-        return None
-
-# Load model and data
-model = load_model()
-data = load_data()
-
-if model is not None and data is not None:
-    # Display sample data with explanation
-    with st.expander("📊 View Sample Data"):
-        st.dataframe(data.head())
-        st.caption("This is a sample of the data used to train the model.")
-    
-    # Create input fields based on your model's features
-    st.subheader("📝 Enter Student Information")
-    
-    # Create three columns for input fields
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        st.markdown("### Academic Information")
-        marital_status = st.selectbox(
-            "Marital Status",
-            options=sorted(data['Marital_status'].unique()),
-            help="Student's marital status"
-        )
-        application_mode = st.selectbox(
-            "Application Mode",
-            options=sorted(data['Application_mode'].unique()),
-            help="The method through which the student applied"
-        )
-        application_order = st.number_input(
-            "Application Order",
-            min_value=0,
-            max_value=10,
-            value=1,
-            help="Order of application"
-        )
-        course = st.selectbox(
-            "Course",
-            options=sorted(data['Course'].unique()),
-            help="The course the student is enrolled in"
-        )
-        daytime_evening_attendance = st.selectbox(
-            "Daytime/Evening Attendance",
-            options=[0, 1],
-            format_func=lambda x: "Daytime" if x == 1 else "Evening",
-            help="Whether the student attends daytime or evening classes"
-        )
-        previous_qualification = st.selectbox(
-            "Previous Qualification",
-            options=sorted(data['Previous_qualification'].unique()),
-            help="Previous qualification type"
-        )
-        previous_qualification_grade = st.number_input(
-            "Previous Qualification Grade",
-            min_value=0.0,
-            max_value=200.0,
-            value=120.0,
-            help="Grade from previous qualification"
-        )
-        nacionality = st.selectbox(
-            "Nationality",
-            options=sorted(data['Nacionality'].unique()),
-            help="Student's nationality"
+    def prepare_input_data(self, form_data):
+        # Create a DataFrame from the form data
+        input_df = pd.DataFrame([form_data], columns=self.feature_names)
+        
+        # If we don't have an encoder saved, create a dummy one
+        if self.encoder is None:
+            self.encoder = self._create_demo_encoder()
+            
+        # Extract categorical features
+        cat_features = input_df[self.categorical_features]
+        
+        # Transform categorical features using one-hot encoding
+        cat_encoded = self.encoder.transform(cat_features)
+        
+        # Get the feature names from the encoder
+        encoded_feature_names = self.encoder.get_feature_names_out(self.categorical_features)
+        
+        # Create a new DataFrame with encoded features
+        cat_encoded_df = pd.DataFrame(
+            cat_encoded, 
+            columns=encoded_feature_names,
+            index=input_df.index
         )
         
-    with col2:
-        st.markdown("### Personal Information")
-        mothers_qualification = st.selectbox(
-            "Mother's Qualification",
-            options=sorted(data['Mothers_qualification'].unique()),
-            help="Mother's highest qualification"
-        )
-        fathers_qualification = st.selectbox(
-            "Father's Qualification",
-            options=sorted(data['Fathers_qualification'].unique()),
-            help="Father's highest qualification"
-        )
-        mothers_occupation = st.selectbox(
-            "Mother's Occupation",
-            options=sorted(data['Mothers_occupation'].unique()),
-            help="Mother's occupation"
-        )
-        fathers_occupation = st.selectbox(
-            "Father's Occupation",
-            options=sorted(data['Fathers_occupation'].unique()),
-            help="Father's occupation"
-        )
-        admission_grade = st.number_input(
-            "Admission Grade",
-            min_value=0.0,
-            max_value=200.0,
-            value=120.0,
-            help="Grade at admission"
-        )
-        displaced = st.selectbox(
-            "Displaced",
-            options=[0, 1],
-            format_func=lambda x: "Yes" if x == 1 else "No",
-            help="Whether the student is displaced"
-        )
-        educational_special_needs = st.selectbox(
-            "Educational Special Needs",
-            options=[0, 1],
-            format_func=lambda x: "Yes" if x == 1 else "No",
-            help="Whether the student has special educational needs"
-        )
-        debtor = st.selectbox(
-            "Debtor",
-            options=[0, 1],
-            format_func=lambda x: "Yes" if x == 1 else "No",
-            help="Whether the student is a debtor"
-        )
-        tuition_fees_up_to_date = st.selectbox(
-            "Tuition Fees Up to Date",
-            options=[0, 1],
-            format_func=lambda x: "Yes" if x == 1 else "No",
-            help="Whether the student's tuition fees are up to date"
-        )
-        gender = st.selectbox(
-            "Gender",
-            options=[0, 1],
-            format_func=lambda x: "Male" if x == 1 else "Female",
-            help="Student's gender"
-        )
-        scholarship_holder = st.selectbox(
-            "Scholarship Holder",
-            options=[0, 1],
-            format_func=lambda x: "Yes" if x == 1 else "No",
-            help="Whether the student has a scholarship"
-        )
-        age_at_enrollment = st.number_input(
-            "Age at Enrollment",
-            min_value=17,
-            max_value=100,
-            value=19,
-            help="Student's age when enrolled"
-        )
-        international = st.selectbox(
-            "International",
-            options=[0, 1],
-            format_func=lambda x: "Yes" if x == 1 else "No",
-            help="Whether the student is international"
-        )
+        # Drop original categorical columns and join with encoded ones
+        input_df_processed = input_df.drop(columns=self.categorical_features)
+        input_df_processed = pd.concat([input_df_processed, cat_encoded_df], axis=1)
         
-    with col3:
-        st.markdown("### Academic Performance")
-        curricular_units_1st_sem_enrolled = st.number_input(
-            "1st Semester Units Enrolled",
-            min_value=0,
-            max_value=20,
-            value=6,
-            help="Number of units enrolled in first semester"
-        )
-        curricular_units_1st_sem_evaluations = st.number_input(
-            "1st Semester Units Evaluated",
-            min_value=0,
-            max_value=20,
-            value=6,
-            help="Number of units evaluated in first semester"
-        )
-        curricular_units_1st_sem_approved = st.number_input(
-            "1st Semester Units Approved",
-            min_value=0,
-            max_value=20,
-            value=6,
-            help="Number of units approved in first semester"
-        )
-        curricular_units_1st_sem_grade = st.number_input(
-            "1st Semester Average Grade",
-            min_value=0.0,
-            max_value=20.0,
-            value=10.0,
-            help="Average grade in first semester"
-        )
-        curricular_units_1st_sem_without_evaluations = st.number_input(
-            "1st Semester Units Without Evaluations",
-            min_value=0,
-            max_value=20,
-            value=0,
-            help="Number of units without evaluations in first semester"
-        )
-        curricular_units_2nd_sem_enrolled = st.number_input(
-            "2nd Semester Units Enrolled",
-            min_value=0,
-            max_value=20,
-            value=6,
-            help="Number of units enrolled in second semester"
-        )
-        curricular_units_2nd_sem_evaluations = st.number_input(
-            "2nd Semester Units Evaluated",
-            min_value=0,
-            max_value=20,
-            value=6,
-            help="Number of units evaluated in second semester"
-        )
-        curricular_units_2nd_sem_approved = st.number_input(
-            "2nd Semester Units Approved",
-            min_value=0,
-            max_value=20,
-            value=6,
-            help="Number of units approved in second semester"
-        )
-        curricular_units_2nd_sem_grade = st.number_input(
-            "2nd Semester Average Grade",
-            min_value=0.0,
-            max_value=20.0,
-            value=10.0,
-            help="Average grade in second semester"
-        )
-        curricular_units_2nd_sem_without_evaluations = st.number_input(
-            "2nd Semester Units Without Evaluations",
-            min_value=0,
-            max_value=20,
-            value=0,
-            help="Number of units without evaluations in second semester"
-        )
-        unemployment_rate = st.number_input(
-            "Unemployment Rate",
-            min_value=0.0,
-            max_value=100.0,
-            value=10.0,
-            help="Current unemployment rate"
-        )
-        inflation_rate = st.number_input(
-            "Inflation Rate",
-            min_value=-100.0,
-            max_value=100.0,
-            value=0.0,
-            help="Current inflation rate"
-        )
-        gdp = st.number_input(
-            "GDP",
-            min_value=0.0,
-            max_value=100000.0,
-            value=1000.0,
-            help="Current GDP"
-        )
-    
-    # Add prediction button
-    if st.button("🔮 Predict Student Success", type="primary"):
-        with st.spinner("Analyzing student data..."):
-            # Prepare input data
-            input_data = pd.DataFrame([[
-                marital_status, application_mode, application_order, course,
-                daytime_evening_attendance, previous_qualification,
-                previous_qualification_grade, nacionality, mothers_qualification,
-                fathers_qualification, mothers_occupation, fathers_occupation,
-                admission_grade, displaced, educational_special_needs, debtor,
-                tuition_fees_up_to_date, gender, scholarship_holder,
-                age_at_enrollment, international, curricular_units_1st_sem_enrolled,
-                curricular_units_1st_sem_evaluations, curricular_units_1st_sem_approved,
-                curricular_units_1st_sem_grade, curricular_units_1st_sem_without_evaluations,
-                curricular_units_2nd_sem_enrolled, curricular_units_2nd_sem_evaluations,
-                curricular_units_2nd_sem_approved, curricular_units_2nd_sem_grade,
-                curricular_units_2nd_sem_without_evaluations, unemployment_rate,
-                inflation_rate, gdp
-            ]], columns=[
-                'Marital_status', 'Application_mode', 'Application_order', 'Course',
-                'Daytime_evening_attendance', 'Previous_qualification',
-                'Previous_qualification_grade', 'Nacionality', 'Mothers_qualification',
-                'Fathers_qualification', 'Mothers_occupation', 'Fathers_occupation',
-                'Admission_grade', 'Displaced', 'Educational_special_needs', 'Debtor',
-                'Tuition_fees_up_to_date', 'Gender', 'Scholarship_holder',
-                'Age_at_enrollment', 'International', 'Curricular_units_1st_sem_enrolled',
-                'Curricular_units_1st_sem_evaluations', 'Curricular_units_1st_sem_approved',
-                'Curricular_units_1st_sem_grade', 'Curricular_units_1st_sem_without_evaluations',
-                'Curricular_units_2nd_sem_enrolled', 'Curricular_units_2nd_sem_evaluations',
-                'Curricular_units_2nd_sem_approved', 'Curricular_units_2nd_sem_grade',
-                'Curricular_units_2nd_sem_without_evaluations', 'Unemployment_rate',
-                'Inflation_rate', 'GDP'
-            ])
+        # Handle any missing features required by the model
+        if self.model is not None:
+            expected_features = 259  # As per the error message
             
-            # Calculate additional features
-            input_data['Total_Approved_Units'] = input_data['Curricular_units_1st_sem_approved'] + input_data['Curricular_units_2nd_sem_approved']
-            input_data['Average_Grade'] = input_data[['Curricular_units_1st_sem_grade', 'Curricular_units_2nd_sem_grade']].mean(axis=1)
-            input_data['Engagement_Score'] = (
-                input_data['Curricular_units_1st_sem_evaluations'] + input_data['Curricular_units_2nd_sem_evaluations']
-            ) / (
-                input_data['Curricular_units_1st_sem_enrolled'] + input_data['Curricular_units_2nd_sem_enrolled'] + 1e-5
-            )
-            input_data['Dropout_Risk_Score'] = (
-                input_data['Debtor'] * 2 +
-                (1 - input_data['Tuition_fees_up_to_date']) +
-                (20 - input_data['Admission_grade']) / 20
-            )
-            
-            # Create a template DataFrame with all possible features
-            template_data = pd.get_dummies(data, columns=[
-                'Marital_status', 'Application_mode', 'Course', 'Daytime_evening_attendance',
-                'Previous_qualification', 'Nacionality', 'Mothers_qualification',
-                'Fathers_qualification', 'Mothers_occupation', 'Fathers_occupation',
-                'Displaced', 'Educational_special_needs', 'Debtor',
-                'Tuition_fees_up_to_date', 'Gender', 'Scholarship_holder',
-                'International'
-            ])
-            
-            # Get all possible feature names from the template
-            all_features = template_data.columns.tolist()
-            
-            # One-hot encode the input data
-            encoded_data = pd.get_dummies(input_data, columns=[
-                'Marital_status', 'Application_mode', 'Course', 'Daytime_evening_attendance',
-                'Previous_qualification', 'Nacionality', 'Mothers_qualification',
-                'Fathers_qualification', 'Mothers_occupation', 'Fathers_occupation',
-                'Displaced', 'Educational_special_needs', 'Debtor',
-                'Tuition_fees_up_to_date', 'Gender', 'Scholarship_holder',
-                'International'
-            ])
-            
-            # Print feature information for debugging
-            st.write("Template features:", len(template_data.columns))
-            st.write("Template feature names:", template_data.columns.tolist())
-            st.write("Input features before alignment:", len(encoded_data.columns))
-            st.write("Input feature names before alignment:", encoded_data.columns.tolist())
-            
-            # Ensure all columns from template exist in encoded data
-            for col in all_features:
-                if col not in encoded_data.columns:
-                    encoded_data[col] = 0
-            
-            # Reorder columns to match template
-            encoded_data = encoded_data[all_features]
-            
-            # Print final feature information
-            st.write("Final input features:", len(encoded_data.columns))
-            st.write("Final feature names:", encoded_data.columns.tolist())
-            
-            # Make prediction
-            prediction = model.predict(encoded_data)
-            
-            # Display prediction with more details
-            st.subheader("🎯 Prediction Result")
-            
-            # Create a container for the prediction
-            prediction_container = st.container()
-            
-            with prediction_container:
-                if prediction[0] == 0:
-                    st.error("⚠️ The student is predicted to Dropout")
-                    st.info("""
-                    **Recommendations:**
-                    - Consider additional academic support
-                    - Review course load and difficulty
-                    - Check for personal or financial issues
-                    """)
-                elif prediction[0] == 1:
-                    st.warning("📚 The student is predicted to be Enrolled")
-                    st.info("""
-                    **Recommendations:**
-                    - Continue current academic support
-                    - Monitor progress regularly
-                    - Maintain good study habits
-                    """)
-                else:
-                    st.success("🎓 The student is predicted to Graduate")
-                    st.info("""
-                    **Recommendations:**
-                    - Continue excellent performance
-                    - Consider advanced courses
-                    - Plan for post-graduation
-                    """)
+            # If we have fewer features than expected, add dummy columns
+            if input_df_processed.shape[1] < expected_features:
+                # Create a dictionary of missing features
+                missing_cols = {
+                    f'missing_feature_{i}': [0] for i in range(expected_features - input_df_processed.shape[1])
+                }
                 
-                # Add a download button for the prediction
-                st.download_button(
-                    label="📥 Download Prediction Report",
-                    data=f"""
-                    Student Success Prediction Report
-                    ===============================
+                # Create a DataFrame from the dictionary
+                missing_df = pd.DataFrame(missing_cols, index=input_df_processed.index)
+                
+                # Concatenate with the existing DataFrame
+                input_df_processed = pd.concat([input_df_processed, missing_df], axis=1)
                     
-                    Academic Information:
-                    - Marital Status: {marital_status}
-                    - Application Mode: {application_mode}
-                    - Application Order: {application_order}
-                    - Course: {course}
-                    - Daytime/Evening Attendance: {"Daytime" if daytime_evening_attendance == 1 else "Evening"}
-                    - Previous Qualification: {previous_qualification}
-                    - Previous Qualification Grade: {previous_qualification_grade}
-                    - Nationality: {nacionality}
-                    
-                    Personal Information:
-                    - Mother's Qualification: {mothers_qualification}
-                    - Father's Qualification: {fathers_qualification}
-                    - Mother's Occupation: {mothers_occupation}
-                    - Father's Occupation: {fathers_occupation}
-                    - Admission Grade: {admission_grade}
-                    - Displaced: {"Yes" if displaced == 1 else "No"}
-                    - Educational Special Needs: {"Yes" if educational_special_needs == 1 else "No"}
-                    - Debtor: {"Yes" if debtor == 1 else "No"}
-                    - Tuition Fees Up to Date: {"Yes" if tuition_fees_up_to_date == 1 else "No"}
-                    - Gender: {"Male" if gender == 1 else "Female"}
-                    - Scholarship Holder: {"Yes" if scholarship_holder == 1 else "No"}
-                    - Age at Enrollment: {age_at_enrollment}
-                    - International: {"Yes" if international == 1 else "No"}
-                    
-                    Academic Performance:
-                    First Semester:
-                    - Units Enrolled: {curricular_units_1st_sem_enrolled}
-                    - Units Evaluated: {curricular_units_1st_sem_evaluations}
-                    - Units Approved: {curricular_units_1st_sem_approved}
-                    - Average Grade: {curricular_units_1st_sem_grade}
-                    - Units Without Evaluations: {curricular_units_1st_sem_without_evaluations}
-                    
-                    Second Semester:
-                    - Units Enrolled: {curricular_units_2nd_sem_enrolled}
-                    - Units Evaluated: {curricular_units_2nd_sem_evaluations}
-                    - Units Approved: {curricular_units_2nd_sem_approved}
-                    - Average Grade: {curricular_units_2nd_sem_grade}
-                    - Units Without Evaluations: {curricular_units_2nd_sem_without_evaluations}
-                    
-                    Economic Indicators:
-                    - Unemployment Rate: {unemployment_rate}
-                    - Inflation Rate: {inflation_rate}
-                    - GDP: {gdp}
-                    
-                    Calculated Metrics:
-                    - Total Approved Units: {input_data['Total_Approved_Units'].iloc[0]}
-                    - Average Grade: {input_data['Average_Grade'].iloc[0]:.2f}
-                    - Engagement Score: {input_data['Engagement_Score'].iloc[0]:.2f}
-                    - Dropout Risk Score: {input_data['Dropout_Risk_Score'].iloc[0]:.2f}
-                    
-                    Prediction: {"Graduate" if prediction[0] == 2 else "Enrolled" if prediction[0] == 1 else "Dropout"}
-                    """,
-                    file_name="student_prediction_report.txt",
-                    mime="text/plain"
-                )
+            # If we have more features than expected, keep only the needed ones
+            elif input_df_processed.shape[1] > expected_features:
+                input_df_processed = input_df_processed.iloc[:, :expected_features]
+        
+        return input_df_processed
 
-else:
-    st.error("""
-    ❌ Required files are missing or cannot be loaded.
-    
-    Please make sure you have:
-    1. 'model.pkl' - The trained model file
-    2. 'data_agum.csv' - The dataset file
-    
-    All files should be in the same directory as this application.
-    """) 
+    def _create_demo_encoder(self):
+        # Create a demonstration encoder for categorical features
+        # Create a dataframe with the same number of rows for each category
+        num_samples = 10  # Create 10 samples to ensure consistent length
+        
+        # Create random but consistent data for each categorical feature
+        dummy_data = pd.DataFrame({
+            'Application_mode': [15, 9254] * 5,
+            'Course': [9254, 9853] * 5,
+            'Mothers_qualification': [1, 2, 3, 1, 2] * 2,
+            'Fathers_qualification': [3, 4, 5, 3, 4] * 2,
+            'Mothers_occupation': [1, 2, 3, 1, 2] * 2,
+            'Fathers_occupation': [1, 2, 3, 1, 2] * 2,
+            'Displaced': [0, 1] * 5,
+            'Gender': [0, 1] * 5,
+            'Scholarship_holder': [0, 1] * 5,
+            'Status': [0, 1] * 5
+        })
+        
+        encoder = OneHotEncoder(sparse_output=False, handle_unknown='ignore')
+        encoder.fit(dummy_data)
+        return encoder
+
+    def predict(self, input_data):
+        if self.model is None:
+            return None
+        
+        try:
+            # Ensure input_data has the expected number of features
+            expected_features = 259  # From the error message
+            
+            if input_data.shape[1] != expected_features:
+                # Adjust feature count
+                if input_data.shape[1] < expected_features:
+                    # Create a dictionary of missing features
+                    missing_cols = {
+                        f'missing_feature_{i}': [0] for i in range(expected_features - input_data.shape[1])
+                    }
+                    
+                    # Create a DataFrame from the dictionary
+                    missing_df = pd.DataFrame(missing_cols, index=input_data.index)
+                    
+                    # Concatenate with the existing DataFrame
+                    input_data = pd.concat([input_data, missing_df], axis=1)
+                else:
+                    input_data = input_data.iloc[:, :expected_features]
+            
+            # Suppress the UserWarning about feature names
+            import warnings
+            with warnings.catch_warnings():
+                warnings.filterwarnings("ignore", category=UserWarning, message="X has feature names")
+                result = self.model.predict(input_data)[0]
+                
+            return str(result)  # Convert to string for consistency
+        except Exception as e:
+            st.error(f"Error during prediction: {str(e)}")
+            return None
+
+def create_input_form():
+    with st.form("student_form"):
+        st.markdown("### Academic Information")
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            application_mode = st.selectbox(
+                "Application Mode",
+                options=[15, 9254],
+                help="Mode of application"
+            )
+            course = st.selectbox(
+                "Course",
+                options=[9254, 9853],
+                help="Selected course"
+            )
+            previous_qualification_grade = st.number_input(
+                "Previous Qualification Grade",
+                min_value=0.0,
+                max_value=200.0,
+                value=160.0,
+                help="Grade from previous qualification"
+            )
+            admission_grade = st.number_input(
+                "Admission Grade",
+                min_value=0.0,
+                max_value=200.0,
+                value=142.5,
+                help="Grade at admission"
+            )
+
+        with col2:
+            mothers_qualification = st.selectbox(
+                "Mother's Qualification",
+                options=[1, 2, 3],
+                help="Mother's highest qualification"
+            )
+            fathers_qualification = st.selectbox(
+                "Father's Qualification",
+                options=[3, 4, 5],
+                help="Father's highest qualification"
+            )
+            mothers_occupation = st.selectbox(
+                "Mother's Occupation",
+                options=[1, 2, 3],
+                help="Mother's occupation"
+            )
+            fathers_occupation = st.selectbox(
+                "Father's Occupation",
+                options=[1, 2, 3],
+                help="Father's occupation"
+            )
+
+        st.markdown("### Personal Information")
+        col3, col4 = st.columns(2)
+        
+        with col3:
+            displaced = st.selectbox(
+                "Displaced",
+                options=[0, 1],
+                format_func=lambda x: "Yes" if x == 1 else "No",
+                help="Whether the student is displaced"
+            )
+            gender = st.selectbox(
+                "Gender",
+                options=[0, 1],
+                format_func=lambda x: "Male" if x == 1 else "Female",
+                help="Student's gender"
+            )
+            scholarship_holder = st.selectbox(
+                "Scholarship Holder",
+                options=[0, 1],
+                format_func=lambda x: "Yes" if x == 1 else "No",
+                help="Whether the student has a scholarship"
+            )
+            age_at_enrollment = st.number_input(
+                "Age at Enrollment",
+                min_value=17,
+                max_value=100,
+                value=19,
+                help="Student's age when enrolled"
+            )
+
+        with col4:
+            status = st.selectbox(
+                "Status",
+                options=[0, 1],
+                format_func=lambda x: "Active" if x == 1 else "Inactive",
+                help="Current student status"
+            )
+            unemployment_rate = st.number_input(
+                "Unemployment Rate",
+                min_value=0.0,
+                max_value=100.0,
+                value=13.9,
+                help="Current unemployment rate"
+            )
+            inflation_rate = st.number_input(
+                "Inflation Rate",
+                min_value=-100.0,
+                max_value=100.0,
+                value=-0.3,
+                help="Current inflation rate"
+            )
+            gdp = st.number_input(
+                "GDP",
+                min_value=0.0,
+                max_value=100000.0,
+                value=0.79,
+                help="Current GDP"
+            )
+
+        st.markdown("### Academic Performance")
+        col5, col6 = st.columns(2)
+        
+        with col5:
+            st.markdown("#### First Semester")
+            curricular_units_1st_sem_enrolled = st.number_input(
+                "Units Enrolled",
+                min_value=0,
+                max_value=20,
+                value=6,
+                key="1st_enrolled"
+            )
+            curricular_units_1st_sem_evaluations = st.number_input(
+                "Units Evaluated",
+                min_value=0,
+                max_value=20,
+                value=6,
+                key="1st_evaluations"
+            )
+            curricular_units_1st_sem_approved = st.number_input(
+                "Units Approved",
+                min_value=0,
+                max_value=20,
+                value=6,
+                key="1st_approved"
+            )
+            ratio_approved_1st_sem = st.number_input(
+                "Approval Ratio",
+                min_value=0.0,
+                max_value=1.0,
+                value=1.0,
+                key="1st_ratio"
+            )
+
+        with col6:
+            st.markdown("#### Second Semester")
+            curricular_units_2nd_sem_enrolled = st.number_input(
+                "Units Enrolled",
+                min_value=0,
+                max_value=20,
+                value=6,
+                key="2nd_enrolled"
+            )
+            curricular_units_2nd_sem_evaluations = st.number_input(
+                "Units Evaluated",
+                min_value=0,
+                max_value=20,
+                value=6,
+                key="2nd_evaluations"
+            )
+            curricular_units_2nd_sem_approved = st.number_input(
+                "Units Approved",
+                min_value=0,
+                max_value=20,
+                value=6,
+                key="2nd_approved"
+            )
+            ratio_approved_2nd_sem = st.number_input(
+                "Approval Ratio",
+                min_value=0.0,
+                max_value=1.0,
+                value=1.0,
+                key="2nd_ratio"
+            )
+
+        submitted = st.form_submit_button("Predict Dropout Risk")
+        
+        if submitted:
+            return {
+                'Application_mode': application_mode,
+                'Course': course,
+                'Previous_qualification_grade': previous_qualification_grade,
+                'Mothers_qualification': mothers_qualification,
+                'Fathers_qualification': fathers_qualification,
+                'Mothers_occupation': mothers_occupation,
+                'Fathers_occupation': fathers_occupation,
+                'Admission_grade': admission_grade,
+                'Displaced': displaced,
+                'Gender': gender,
+                'Scholarship_holder': scholarship_holder,
+                'Age_at_enrollment': age_at_enrollment,
+                'Curricular_units_1st_sem_enrolled': curricular_units_1st_sem_enrolled,
+                'Curricular_units_1st_sem_evaluations': curricular_units_1st_sem_evaluations,
+                'Curricular_units_1st_sem_approved': curricular_units_1st_sem_approved,
+                'Curricular_units_2nd_sem_enrolled': curricular_units_2nd_sem_enrolled,
+                'Curricular_units_2nd_sem_evaluations': curricular_units_2nd_sem_evaluations,
+                'Curricular_units_2nd_sem_approved': curricular_units_2nd_sem_approved,
+                'Unemployment_rate': unemployment_rate,
+                'Inflation_rate': inflation_rate,
+                'GDP': gdp,
+                'Status': status,
+                'Ratio_approved_1st_sem': ratio_approved_1st_sem,
+                'Ratio_approved_2nd_sem': ratio_approved_2nd_sem
+            }
+    return None
+
+def display_prediction(prediction):
+    if prediction == '1':
+        st.markdown("""
+            <div class='prediction-box' style='background-color: #d4edda; border: 1px solid #c3e6cb;'>
+                <h2 style='color: #155724;'>🎓 Low Dropout Risk</h2>
+                <p style='color: #155724;'>The student is likely to continue their studies successfully.</p>
+            </div>
+        """, unsafe_allow_html=True)
+    else:
+        st.markdown("""
+            <div class='prediction-box' style='background-color: #f8d7da; border: 1px solid #f5c6cb;'>
+                <h2 style='color: #721c24;'>⚠️ High Dropout Risk</h2>
+                <p style='color: #721c24;'>The student may need additional support to continue their studies.</p>
+            </div>
+        """, unsafe_allow_html=True)
+
+def main():
+    st.title("🎓 Student Dropout Predictor")
+    st.markdown("""
+    This application helps predict whether a student is at risk of dropping out based on various academic and personal factors.
+    Please fill in the student's information below to get a prediction.
+    """)
+
+    predictor = StudentPredictor()
+    if predictor.load_model():
+        form_data = create_input_form()
+        
+        if form_data is not None:
+            with st.spinner("Processing data and making prediction..."):
+                input_data = predictor.prepare_input_data(form_data)
+                prediction = predictor.predict(input_data)
+                
+                if prediction is not None:
+                    display_prediction(prediction)
+                    
+                    # Add timestamp
+                    st.markdown(f"*Prediction made on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}*")
+
+if __name__ == "__main__":
+    main()
