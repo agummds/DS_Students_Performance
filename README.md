@@ -6,118 +6,100 @@ Jaya Jaya Institut adalah sebuah lembaga pendidikan tinggi yang berdiri sejak ta
 
 ## Permasalahan Bisnis
 
-Jaya Jaya Institut saat ini dihadapkan pada tantangan besar terkait tingginya angka mahasiswa yang tidak menyelesaikan studi (dropout). Fenomena ini tidak hanya berdampak pada reputasi dan stabilitas keuangan institusi, tetapi juga membawa konsekuensi negatif bagi para mahasiswa yang gagal menyelesaikan pendidikan mereka.
-
-Dropout yang tinggi berpotensi menurunkan tingkat kepercayaan calon mahasiswa beserta orang tua terhadap mutu pendidikan yang ditawarkan. Beberapa isu bisnis utama yang muncul akibat kondisi ini meliputi:
+Jaya Jaya Institut saat ini dihadapkan pada tantangan besar terkait tingginya angka mahasiswa yang tidak menyelesaikan studi (dropout). Fenomena ini tidak hanya berdampak pada reputasi dan stabilitas keuangan institusi, tetapi juga membawa konsekuensi negatif bagi para mahasiswa yang gagal menyelesaikan pendidikan mereka. Dropout yang tinggi berpotensi menurunkan tingkat kepercayaan calon mahasiswa beserta orang tua terhadap mutu pendidikan yang ditawarkan. Beberapa isu bisnis utama yang muncul akibat kondisi ini meliputi:
 
 * **Citra Institusi**: Tingkat dropout yang signifikan berisiko menodai reputasi Jaya Jaya Institut sebagai lembaga pendidikan yang kredibel dan berkualitas.
 * **Penurunan Pendapatan**: Setiap mahasiswa yang keluar sebelum lulus menyebabkan hilangnya potensi pemasukan dari biaya kuliah dan pendukung lainnya.
 * **Dampak terhadap Akreditasi**: Persentase kelulusan yang rendah dapat memengaruhi penilaian akreditasi institusi secara keseluruhan.
 * **Ketidakpuasan Para Pemangku Kepentingan**: Kepercayaan mahasiswa, orang tua, dan masyarakat luas bisa menurun apabila institusi dianggap kurang efektif dalam membimbing mahasiswa hingga lulus.
 
-# Cakupan Proyek
+## Cakupan Proyek
 
 * Melakukan pengumpulan serta pengolahan data mahasiswa.
 * Menganalisis data untuk mengidentifikasi apa saja hal yang menyebabkan dropout mahasiswa.
 * Mengembangkan model prediksi menggunakan 3 algoritma yang ada untuk memprediksi.
 * Mendesain dashboard untuk memvisualisasikan prediksi.
-* Menyusun **action recommendation** berdasarkan temuan yang diperoleh.
+* Menyusun *Action Recommendation* berdasarkan temuan yang diperoleh.
 
-# Persiapan
+## Persiapan
 
-Berikut adalah tahapan untuk menyiapkannya:
+### 📦 Sumber Data
 
-**Sumber data**: [Student Performance](https://github.com/dicodingacademy/dicoding_dataset/blob/main/students_performance/data.csv)
+Dataset yang digunakan berasal dari GitHub:
+[Student Performance Dataset](https://github.com/dicodingacademy/dicoding_dataset/blob/main/students_performance/data.csv)
 
-Di sini, untuk melakukan proses, saya sepenuhnya menggunakan Google Colab. Baru kemudian pada bagian visualisasi menggunakan Metabase dengan Docker. Tapi jika ingin menjalankan proyek secara lokal, dapat dilakukan dengan cara berikut:
+### 📍 Tools
 
-1. Buka terminal di VS Code.
-2. Jalankan perintah berikut:
+* Proses analisis dan pembuatan model dilakukan di **Google Colab**.
+* Visualisasi dan integrasi model ke dalam dashboard dilakukan menggunakan **Metabase** melalui **Docker**.
+
+### 🧪 Local Setup (Opsional)
+
+Jika ingin menjalankan proyek secara lokal, berikut langkah-langkahnya:
+
+1. Buka terminal di VSCode
+2. Buat environment baru:
 
    ```bash
-   conda create --name submissionds python==3.9.21
+   conda create --name submissionds python==3.12.7
    ```
-3. Jalankan perintah kedua untuk mengaktifkan virtual environment:
+3. Aktifkan environment:
 
    ```bash
    conda activate submissionds
    ```
-4. Lanjut ke tahap untuk melihat model prediksi menggunakan Streamlit.
-
-# Business Dashboard
-
-Dashboard bisnis ini dirancang untuk memprediksi kemungkinan seorang mahasiswa mengalami dropout di Jaya Jaya Institut. Prediksi dilakukan menggunakan model machine learning yang telah dilatih sebelumnya dan diintegrasikan ke dalam dashboard untuk memberikan hasil secara real-time berdasarkan data yang dimasukkan.
-
-Dashboard menyediakan berbagai kolom input yang merepresentasikan faktor-faktor yang dapat memengaruhi keputusan mahasiswa untuk berhenti studi, seperti jalur pendaftaran, mata kuliah yang diambil, latar belakang pendidikan, pekerjaan orang tua, serta aspek akademik lainnya.
-
-Hasil prediksi ditampilkan secara langsung menggunakan model yang sudah disimpan, sehingga pengguna dapat memperoleh wawasan cepat mengenai risiko dropout setiap mahasiswa.
-
-Dengan adanya dashboard ini, diharapkan pihak Jaya Jaya Institut dapat segera mengidentifikasi mahasiswa yang berisiko dan menerapkan langkah-langkah pencegahan lebih awal guna menekan angka dropout dan meningkatkan keberhasilan studi mahasiswa.
-
-# Menjalankan Sistem Machine Learning
-
-Aplikasi prediksi keberhasilan mahasiswa menggunakan machine learning yang diimplementasikan dengan Streamlit.
-
-Aplikasi ini telah di-deploy ke Streamlit Community Cloud dan dapat diakses melalui link berikut:
-[Student Success Predictor](https://dsstudentsperformance-nbon53ohzaeomfn4sthpnn.streamlit.app/)
-
-### 🛠️ Local Development
-
-#### Prerequisites
-
-* Python 3.12.7
-* pip (Python package manager)
-
-#### Installation
-
-1. Clone repository ini:
+4. Clone repositori:
 
    ```bash
    git clone https://github.com/agummds/DS_Students_Performance
    cd DS_Students_Performance
    ```
-2. Aktifkan virtual environment.
-3. Install dependencies:
+5. Install dependensi:
 
    ```bash
    pip install -r requirements.txt
    ```
-4. Pastikan file-file berikut ada di direktori yang sama dengan `app.py`:
-
-   * `model.pkl` (model machine learning)
-   * `data_agum.csv` (dataset)
-5. Jalankan aplikasi secara lokal:
+6. Pastikan file `model.pkl` dan `data_agum.csv` berada dalam direktori yang sama dengan `app.py`
+7. Jalankan aplikasi:
 
    ```bash
    streamlit run app.py
    ```
 
-## 📋 Requirements
-
-File `requirements.txt` berisi semua dependensi yang diperlukan:
+### 📋 Kebutuhan Teknis
 
 ```
-streamlit==1.32.0
-pandas==2.2.1
-numpy==1.26.4
-scikit-learn
-matplotlib
+streamlit==1.32.0  
+pandas==2.2.1  
+numpy==1.26.4  
+scikit-learn  
+matplotlib  
 seaborn
 ```
 
-# Conclusion
+## Menjalankan Sistem Machine Learning
+
+Aplikasi prediksi keberhasilan mahasiswa telah dideploy dan dapat diakses secara publik melalui link berikut:
+
+🔗 [Student Success Predictor – Streamlit App](https://dsstudentsperformance-nbon53ohzaeomfn4sthpnn.streamlit.app/)
+
+## Business Dashboard
+
+Dashboard bisnis ini dirancang untuk memprediksi kemungkinan seorang mahasiswa mengalami dropout di Jaya Jaya Institut. Prediksi dilakukan menggunakan model machine learning yang telah dilatih sebelumnya dan diintegrasikan ke dalam dashboard untuk memberikan hasil secara real-time berdasarkan data yang dimasukkan.
+
+Dashboard menyediakan berbagai kolom input yang merepresentasikan faktor-faktor yang dapat memengaruhi keputusan mahasiswa untuk berhenti studi, seperti jalur pendaftaran, mata kuliah yang diambil, latar belakang pendidikan, pekerjaan orang tua, serta aspek akademik lainnya. Hasil prediksi ditampilkan secara langsung menggunakan model yang sudah disimpan, sehingga pengguna dapat memperoleh wawasan cepat mengenai risiko dropout setiap mahasiswa.
+
+Dengan adanya dashboard ini, diharapkan pihak Jaya Jaya Institut dapat segera mengidentifikasi mahasiswa yang berisiko dan menerapkan langkah-langkah pencegahan lebih awal guna menekan angka dropout dan meningkatkan keberhasilan studi mahasiswa.
+
+## Conclusion
 
 Analisis terhadap fenomena mahasiswa yang mengalami dropout di Jaya Jaya Institut menunjukkan bahwa terdapat lima kelompok faktor utama yang memengaruhi keputusan mahasiswa untuk keluar dari studi, yaitu: karakteristik demografis, latar belakang pendidikan, kondisi ekonomi, situasi keluarga dan sosial, serta pencapaian akademik.
 
-Dari hasil analisis data, faktor akademik terbukti menjadi prediktor paling signifikan terhadap kemungkinan dropout, khususnya performa pada semester awal. Jumlah mata kuliah yang lulus di semester kedua dan total satuan kredit (SKS) yang disetujui merupakan indikator yang paling kuat, diikuti oleh nilai akademik pada semester pertama.
+Dari hasil analisis data, faktor akademik terbukti menjadi prediktor paling signifikan terhadap kemungkinan dropout, khususnya performa pada semester awal. Jumlah mata kuliah yang lulus di semester kedua dan total satuan kredit (SKS) yang disetujui merupakan indikator yang paling kuat, diikuti oleh nilai akademik pada semester pertama. Ditemukan pula bahwa nilai per mata kuliah memiliki pengaruh lebih besar dibandingkan frekuensi evaluasi yang dilakukan. Sementara itu, skor risiko dropout dan nilai masuk berperan secara moderat, dan usia, riwayat akademis sebelumnya, serta status pembayaran biaya kuliah menunjukkan pengaruh yang relatif kecil.
 
-Ditemukan pula bahwa nilai per mata kuliah memiliki pengaruh lebih besar dibandingkan frekuensi evaluasi yang dilakukan. Sementara itu, skor risiko dropout dan nilai masuk berperan secara moderat, dan usia, riwayat akademis sebelumnya, serta status pembayaran biaya kuliah menunjukkan pengaruh yang relatif kecil.
+Secara keseluruhan, keberhasilan akademik pada awal masa studi, khususnya di semester kedua, menjadi penentu utama dalam mempertahankan mahasiswa hingga lulus. Mahasiswa yang berhasil memperoleh nilai lebih tinggi dan meluluskan lebih banyak mata kuliah cenderung memiliki kemungkinan lebih besar untuk menyelesaikan pendidikan mereka.
 
-Secara keseluruhan, keberhasilan akademik pada awal masa studi, khususnya di semester kedua, menjadi penentu utama dalam mempertahankan mahasiswa hingga lulus.
-
-# Rekomendasi Action Items Berdasarkan Analisis Dashboard
-
-Berdasarkan analisis dashboard yang telah dibuat, berikut adalah beberapa temuan kunci:
+## Rekomendasi Action Items Berdasarkan Analisis Dashboard
 
 ### 1. Distribusi Status Mahasiswa
 
@@ -216,26 +198,48 @@ Berdasarkan analisis dashboard yang telah dibuat, berikut adalah beberapa temuan
 
 ## 🔄 Proses Evaluasi
 
-### Evaluasi Bulanan
+1. **Evaluasi Bulanan**
 
-* Review metrik utama
-* Penyesuaian program berdasarkan feedback
-* Pelaporan ke stakeholder
+   * Review metrik utama
+   * Penyesuaian program berdasarkan feedback
+   * Pelaporan ke stakeholder
 
-### Evaluasi Triwulanan
+2. **Evaluasi Triwulanan**
 
-* Analisis mendalam terhadap program
-* Penyesuaian strategi
-* Pelatihan dan pengembangan tim
+   * Analisis mendalam terhadap program
+   * Penyesuaian strategi
+   * Pelatihan dan pengembangan tim
 
-### Evaluasi Tahunan
+3. **Evaluasi Tahunan**
 
-* Review komprehensif
-* Perencanaan strategis
-* Pengembangan program baru
+   * Review komprehensif
+   * Perencanaan strategis
+   * Pengembangan program baru
 
+## 📋 Rekomendasi Tambahan
 
-# Email dan Password Metabase
+### Teknologi
 
-* **Email**: [root@mail.com](mailto:root@mail.com)
-* **Password**: root123
+* Implementasi sistem AI untuk prediksi risiko
+* Pengembangan aplikasi mobile untuk monitoring
+* Integrasi sistem informasi akademik
+
+### SDM
+
+* Pelatihan khusus untuk dosen dan staf
+* Pengembangan tim konseling
+* Program pengembangan profesional
+
+### Infrastruktur
+
+* Pengembangan fasilitas belajar
+* Peningkatan akses teknologi
+* Pengembangan ruang kolaborasi
+
+## 🔐 Akses Metabase
+
+* **Email**: `root@mail.com`
+* **Password**: `root123`
+
+---
+
