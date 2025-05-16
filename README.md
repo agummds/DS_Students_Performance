@@ -99,7 +99,7 @@ Dari hasil analisis data, faktor akademik terbukti menjadi prediktor paling sign
 
 Secara keseluruhan, keberhasilan akademik pada awal masa studi, khususnya di semester kedua, menjadi penentu utama dalam mempertahankan mahasiswa hingga lulus. Mahasiswa yang berhasil memperoleh nilai lebih tinggi dan meluluskan lebih banyak mata kuliah cenderung memiliki kemungkinan lebih besar untuk menyelesaikan pendidikan mereka.
 
-## Rekomendasi Action Items Berdasarkan Analisis Dashboard
+## Rekomendasi Action Items
 
 ### 1. Distribusi Status Mahasiswa
 
