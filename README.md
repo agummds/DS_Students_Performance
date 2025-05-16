@@ -85,11 +85,11 @@ Aplikasi prediksi keberhasilan mahasiswa telah dideploy dan dapat diakses secara
 
 ## Business Dashboard
 
-Dashboard bisnis ini dirancang untuk memprediksi kemungkinan seorang mahasiswa mengalami dropout di Jaya Jaya Institut. Prediksi dilakukan menggunakan model machine learning yang telah dilatih sebelumnya dan diintegrasikan ke dalam dashboard untuk memberikan hasil secara real-time berdasarkan data yang dimasukkan.
+Dashboard bisnis dikembangkan untuk memvisualisasikan informasi terkait risiko dropout mahasiswa di Jaya Jaya Institut serta faktor-faktor utama yang berkontribusi terhadap keputusan mahasiswa untuk berhenti studi.
 
-Dashboard menyediakan berbagai kolom input yang merepresentasikan faktor-faktor yang dapat memengaruhi keputusan mahasiswa untuk berhenti studi, seperti jalur pendaftaran, mata kuliah yang diambil, latar belakang pendidikan, pekerjaan orang tua, serta aspek akademik lainnya. Hasil prediksi ditampilkan secara langsung menggunakan model yang sudah disimpan, sehingga pengguna dapat memperoleh wawasan cepat mengenai risiko dropout setiap mahasiswa.
+Dashboard ini menyajikan berbagai aspek yang relevan, termasuk jalur pendaftaran, latar belakang pendidikan, status pekerjaan orang tua, mata kuliah yang diambil, serta performa akademik mahasiswa. Setiap input ini digunakan oleh model machine learning yang telah dilatih sebelumnya untuk memprediksi kemungkinan terjadinya dropout secara real-time.
 
-Dengan adanya dashboard ini, diharapkan pihak Jaya Jaya Institut dapat segera mengidentifikasi mahasiswa yang berisiko dan menerapkan langkah-langkah pencegahan lebih awal guna menekan angka dropout dan meningkatkan keberhasilan studi mahasiswa.
+Dengan tampilan yang interaktif dan hasil prediksi yang langsung ditampilkan, dashboard ini memungkinkan pihak institusi untuk dengan cepat mengidentifikasi mahasiswa yang berisiko tinggi dropout. Hal ini mendukung pengambilan keputusan yang lebih tepat dalam menyusun strategi intervensi dini guna meningkatkan retensi dan keberhasilan studi mahasiswa.
 
 ## Conclusion
 
