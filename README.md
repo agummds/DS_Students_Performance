@@ -1,7 +1,3 @@
-Terima kasih atas klarifikasinya. Berikut ini versi **rapi tanpa mengubah format heading** seperti yang Anda minta. Saya hanya memperbaiki ejaan, konsistensi penulisan, dan kerapian tata bahasa **tanpa mengubah struktur besar atau heading**:
-
----
-
 # Proyek Akhir: Menyelesaikan Permasalahan Perusahaan Edutech
 
 ## Business Understanding
