@@ -57,7 +57,7 @@ Aplikasi prediksi keberhasilan mahasiswa menggunakan machine learning yang diimp
 ### 🚀 Deployment
 
 Aplikasi ini telah di-deploy ke Streamlit Community Cloud dan dapat diakses melalui link berikut:
-[Student Success Predictor](https://student-success-predictor.streamlit.app)
+[Student Success Predictor](https://dsstudentsperformance-nbon53ohzaeomfn4sthpnn.streamlit.app/)
 
 ### 🛠️ Local Development
 
