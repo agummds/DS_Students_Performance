@@ -92,21 +92,21 @@ streamlit run app.py
 
 File `requirements.txt` berisi semua dependensi yang diperlukan:
 ```
-streamlit==1.30.0
-pandas==2.1.4
-numpy==1.25.2
-matplotlib==3.7.2
-seaborn==0.12.2
-scikit-learn==1.2.2
+streamlit==1.32.0
+pandas==2.2.1
+numpy==1.26.4
+scikit-learn
+matplotlib
+seaborn
 ```
 
 # Conclusion
 
 Fenomena dropout mahasiswa di Jaya Jaya Institut dipengaruhi oleh sejumlah faktor yang dapat dikelompokkan ke dalam lima kategori utama, yakni karakteristik demografis, latar belakang pendidikan, kondisi ekonomi, situasi keluarga dan sosial, serta pencapaian akademik.
 
-Mahasiswa yang berisiko lebih tinggi untuk tidak menyelesaikan studi umumnya memiliki usia yang lebih tua pada saat pendaftaran, termasuk dalam kategori over 23 years old atau mahasiswa transfer, serta mengambil program studi Manajemen kelas malam atau Teknik Informatika. Selain itu, mahasiswa dengan nilai awal masuk (admission grade) yang rendah serta yang tidak memperoleh beasiswa juga menunjukkan kecenderungan yang lebih besar untuk mengalami dropout.
+Berdasarkan analisis data, faktor yang paling signifikan mempengaruhi dropout adalah performa akademik, terutama jumlah mata kuliah yang disetujui di semester kedua dan total unit yang disetujui. Nilai dan hasil akademik semester pertama juga memiliki pengaruh yang kuat. Menariknya, nilai per mata kuliah lebih berpengaruh daripada jumlah evaluasi yang dilakukan. Skor risiko dropout dan nilai masuk memiliki pengaruh sedang, sementara usia, riwayat akademis sebelumnya, dan status pembayaran biaya kuliah memiliki pengaruh yang lebih kecil.
 
-Dari sisi latar belakang keluarga, mahasiswa yang berasal dari lingkungan dengan dukungan pendidikan yang rendah—terutama apabila tingkat pendidikan ayah dan ibu tidak diketahui—juga memiliki potensi lebih tinggi untuk keluar dari institusi sebelum menyelesaikan program studi. Secara umum, mahasiswa yang mengalami dropout menunjukkan performa akademik yang cenderung lebih rendah dibandingkan rekan-rekan mereka yang melanjutkan studi hingga lulus.
+Secara umum, keberhasilan akademik saat kuliah, terutama di semester kedua, adalah prediktor terkuat untuk menentukan apakah seorang mahasiswa akan menyelesaikan studinya atau tidak. Mahasiswa yang berhasil menyelesaikan lebih banyak mata kuliah di semester kedua dan memiliki nilai rata-rata yang lebih tinggi cenderung untuk tetap melanjutkan studi hingga lulus.
 
 # Rekomendasi Action Items Berdasarkan Analisis Dashboard
 
