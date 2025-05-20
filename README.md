@@ -75,6 +75,7 @@ numpy==1.26.4
 scikit-learn  
 matplotlib  
 seaborn
+sqlalchemy
 ```
 
 ## Menjalankan Sistem Machine Learning
@@ -82,6 +83,14 @@ seaborn
 Aplikasi prediksi keberhasilan mahasiswa telah dideploy dan dapat diakses secara publik melalui link berikut:
 
 🔗 [Student Success Predictor – Streamlit App](https://dsstudentsperformance-nbon53ohzaeomfn4sthpnn.streamlit.app/)
+
+Atau, jika ingin mengaksesnya secara local bisa jalankan dengan perintah berikut;
+6. Pastikan file `model.pkl` dan `data_agum.csv` berada dalam direktori yang sama dengan `app.py`
+7. Jalankan aplikasi:
+
+   ```bash
+   streamlit run app.py
+   ```
 
 ## Business Dashboard
 
