@@ -104,9 +104,11 @@ Dengan tampilan yang interaktif dan hasil prediksi yang langsung ditampilkan, da
 
 Analisis terhadap fenomena mahasiswa yang mengalami dropout di Jaya Jaya Institut menunjukkan bahwa terdapat lima kelompok faktor utama yang memengaruhi keputusan mahasiswa untuk keluar dari studi, yaitu: karakteristik demografis, latar belakang pendidikan, kondisi ekonomi, situasi keluarga dan sosial, serta pencapaian akademik.
 
-Dari hasil analisis data, faktor akademik terbukti menjadi prediktor paling signifikan terhadap kemungkinan dropout, khususnya performa pada semester awal. Jumlah mata kuliah yang lulus di semester kedua dan total satuan kredit (SKS) yang disetujui merupakan indikator yang paling kuat, diikuti oleh nilai akademik pada semester pertama. Ditemukan pula bahwa nilai per mata kuliah memiliki pengaruh lebih besar dibandingkan frekuensi evaluasi yang dilakukan. Sementara itu, skor risiko dropout dan nilai masuk berperan secara moderat, dan usia, riwayat akademis sebelumnya, serta status pembayaran biaya kuliah menunjukkan pengaruh yang relatif kecil.
+Dari hasil analisis data, faktor akademik terbukti menjadi prediktor paling signifikan terhadap kemungkinan dropout, terutama performa akademik pada semester awal. Visualisasi hubungan antara Average Grade dan Engagement Score menunjukkan bahwa mahasiswa dengan nilai rata-rata tinggi cenderung memiliki tingkat keterlibatan yang juga tinggi. Hal ini mengindikasikan bahwa keterlibatan aktif mahasiswa secara tidak langsung berkaitan dengan keberhasilan akademik dan kemungkinan menyelesaikan studi.
 
-Secara keseluruhan, keberhasilan akademik pada awal masa studi, khususnya di semester kedua, menjadi penentu utama dalam mempertahankan mahasiswa hingga lulus. Mahasiswa yang berhasil memperoleh nilai lebih tinggi dan meluluskan lebih banyak mata kuliah cenderung memiliki kemungkinan lebih besar untuk menyelesaikan pendidikan mereka.
+Indikator seperti jumlah mata kuliah yang disetujui, nilai rata-rata, serta skor keterlibatan terbukti memiliki pengaruh yang kuat terhadap kelulusan. Di sisi lain, faktor seperti skor risiko dropout (Dropout Risk Score), nilai masuk, serta status pembayaran biaya kuliah memberikan kontribusi sedang hingga rendah terhadap prediksi dropout. Faktor demografis seperti usia atau latar belakang akademis sebelumnya menunjukkan pengaruh yang lebih kecil.
+
+Secara keseluruhan, keberhasilan akademik pada awal masa studi—yang tercermin melalui kombinasi antara nilai akademik dan skor keterlibatan—menjadi penentu utama dalam mempertahankan mahasiswa hingga lulus. Mahasiswa yang menunjukkan keterlibatan tinggi dan nilai baik di awal studi memiliki kemungkinan lebih besar untuk menyelesaikan pendidikan mereka.
 
 ## Rekomendasi Action Items
 
