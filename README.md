@@ -94,21 +94,23 @@ Atau, jika ingin mengaksesnya secara local bisa jalankan dengan perintah berikut
 
 ## Business Dashboard
 
-Dashboard bisnis dikembangkan untuk memvisualisasikan informasi terkait risiko dropout mahasiswa di Jaya Jaya Institut serta faktor-faktor utama yang berkontribusi terhadap keputusan mahasiswa untuk berhenti studi.
+Dashboard ini dikembangkan untuk memvisualisasikan dan menganalisis fenomena dropout mahasiswa di Jaya Jaya Institut, dengan menyoroti hubungan antara dropout risk score, engagement score, dan status kelulusan.
 
-Dashboard ini menyajikan berbagai aspek yang relevan, termasuk jalur pendaftaran, latar belakang pendidikan, status pekerjaan orang tua, mata kuliah yang diambil, serta performa akademik mahasiswa. Setiap input ini digunakan oleh model machine learning yang telah dilatih sebelumnya untuk memprediksi kemungkinan terjadinya dropout secara real-time.
+Visualisasi utama pada dashboard menunjukkan:
 
-Dengan tampilan yang interaktif dan hasil prediksi yang langsung ditampilkan, dashboard ini memungkinkan pihak institusi untuk dengan cepat mengidentifikasi mahasiswa yang berisiko tinggi dropout. Hal ini mendukung pengambilan keputusan yang lebih tepat dalam menyusun strategi intervensi dini guna meningkatkan retensi dan keberhasilan studi mahasiswa.
+Distribusi mahasiswa berdasarkan nilai dropout risk score, yang dikelompokkan secara otomatis ke dalam interval nilai.
+
+Proporsi status mahasiswa (Graduate, Dropout, Enrolled) berdasarkan total dropout risk score dan engagement mereka.
+
+Dashboard ini memberikan pandangan langsung tentang bagaimana skor risiko memengaruhi status akhir mahasiswa. Warna yang dibedakan pada diagram donat memudahkan identifikasi kelompok risiko yang signifikan. Selain itu, filter interaktif memungkinkan institusi untuk fokus pada segmen mahasiswa tertentu berdasarkan skor keterlibatan (engagement score), sehingga memperkuat upaya intervensi dini dan strategi retensi.
 
 ## Conclusion
 
-Analisis terhadap fenomena mahasiswa yang mengalami dropout di Jaya Jaya Institut menunjukkan bahwa terdapat lima kelompok faktor utama yang memengaruhi keputusan mahasiswa untuk keluar dari studi, yaitu: karakteristik demografis, latar belakang pendidikan, kondisi ekonomi, situasi keluarga dan sosial, serta pencapaian akademik.
+Dari hasil visualisasi dan analisis, terlihat bahwa skor risiko dropout (dropout risk score) merupakan salah satu indikator penting dalam memahami perilaku mahasiswa terkait dropout. Mahasiswa dengan skor risiko lebih rendah cenderung memiliki status Graduate, sedangkan skor risiko tinggi lebih sering ditemukan pada mahasiswa yang mengalami Dropout.
 
-Dari hasil analisis data, faktor akademik terbukti menjadi prediktor paling signifikan terhadap kemungkinan dropout, terutama performa akademik pada semester awal. Visualisasi hubungan antara Average Grade dan Engagement Score menunjukkan bahwa mahasiswa dengan nilai rata-rata tinggi cenderung memiliki tingkat keterlibatan yang juga tinggi. Hal ini mengindikasikan bahwa keterlibatan aktif mahasiswa secara tidak langsung berkaitan dengan keberhasilan akademik dan kemungkinan menyelesaikan studi.
+Distribusi status berdasarkan engagement score juga menunjukkan pola yang jelas—mahasiswa dengan keterlibatan tinggi lebih banyak yang lulus, sedangkan mereka dengan keterlibatan rendah memiliki kemungkinan lebih besar untuk dropout. Hal ini memperkuat dugaan bahwa keterlibatan aktif dalam proses akademik berperan penting dalam kesuksesan studi.
 
-Indikator seperti jumlah mata kuliah yang disetujui, nilai rata-rata, serta skor keterlibatan terbukti memiliki pengaruh yang kuat terhadap kelulusan. Di sisi lain, faktor seperti skor risiko dropout (Dropout Risk Score), nilai masuk, serta status pembayaran biaya kuliah memberikan kontribusi sedang hingga rendah terhadap prediksi dropout. Faktor demografis seperti usia atau latar belakang akademis sebelumnya menunjukkan pengaruh yang lebih kecil.
-
-Secara keseluruhan, keberhasilan akademik pada awal masa studi—yang tercermin melalui kombinasi antara nilai akademik dan skor keterlibatan—menjadi penentu utama dalam mempertahankan mahasiswa hingga lulus. Mahasiswa yang menunjukkan keterlibatan tinggi dan nilai baik di awal studi memiliki kemungkinan lebih besar untuk menyelesaikan pendidikan mereka.
+Secara keseluruhan, dashboard ini menunjukkan bahwa kombinasi antara dropout risk score dan engagement score merupakan prediktor yang kuat terhadap status kelulusan. Oleh karena itu, pemantauan dua metrik ini secara berkala dapat membantu institusi mengambil tindakan preventif yang lebih tepat dan meningkatkan retensi mahasiswa secara signifikan.
 
 ## Rekomendasi Action Items
 
