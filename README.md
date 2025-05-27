@@ -92,15 +92,16 @@ Atau, jika ingin mengaksesnya secara local bisa jalankan dengan perintah berikut
    streamlit run app.py
    ```
 
+
 ## Business Dashboard
 
 Dashboard ini dikembangkan untuk memvisualisasikan dan menganalisis fenomena dropout mahasiswa di Jaya Jaya Institut, dengan menyoroti hubungan antara dropout risk score, engagement score, dan status kelulusan.
 
 Visualisasi utama pada dashboard menunjukkan:
 
-Distribusi mahasiswa berdasarkan nilai dropout risk score, yang dikelompokkan secara otomatis ke dalam interval nilai.
+- Distribusi mahasiswa berdasarkan nilai dropout risk score, yang dikelompokkan secara otomatis ke dalam interval nilai.
 
-Proporsi status mahasiswa (Graduate, Dropout, Enrolled) berdasarkan total dropout risk score dan engagement mereka.
+- Proporsi status mahasiswa (Graduate, Dropout, Enrolled) berdasarkan total dropout risk score dan engagement mereka.
 
 Dashboard ini memberikan pandangan langsung tentang bagaimana skor risiko memengaruhi status akhir mahasiswa. Warna yang dibedakan pada diagram donat memudahkan identifikasi kelompok risiko yang signifikan. Selain itu, filter interaktif memungkinkan institusi untuk fokus pada segmen mahasiswa tertentu berdasarkan skor keterlibatan (engagement score), sehingga memperkuat upaya intervensi dini dan strategi retensi.
 
@@ -111,6 +112,12 @@ Dari hasil visualisasi dan analisis, terlihat bahwa skor risiko dropout (dropout
 Distribusi status berdasarkan engagement score juga menunjukkan pola yang jelas—mahasiswa dengan keterlibatan tinggi lebih banyak yang lulus, sedangkan mereka dengan keterlibatan rendah memiliki kemungkinan lebih besar untuk dropout. Hal ini memperkuat dugaan bahwa keterlibatan aktif dalam proses akademik berperan penting dalam kesuksesan studi.
 
 Secara keseluruhan, dashboard ini menunjukkan bahwa kombinasi antara dropout risk score dan engagement score merupakan prediktor yang kuat terhadap status kelulusan. Oleh karena itu, pemantauan dua metrik ini secara berkala dapat membantu institusi mengambil tindakan preventif yang lebih tepat dan meningkatkan retensi mahasiswa secara signifikan.
+
+## Conclusion
+
+Mahasiswa dengan skor Dropout Risk Score tinggi mendominasi populasi dan memiliki kecenderungan lebih besar untuk dropout. Mahasiswa yang lulus (Graduate) cenderung memiliki risiko dropout yang lebih rendah, serta engagement yang lebih tinggi dibandingkan mahasiswa yang dropout. Usia rata-rata saat pendaftaran cenderung lebih tinggi pada mahasiswa dropout, yang mungkin mencerminkan faktor eksternal yang memengaruhi kelulusan. Terdapat perbedaan signifikan pada application mode dan jumlah kursus yang diambil antara status mahasiswa, yang bisa menjadi indikator awal untuk strategi intervensi.
+
+Secara keseluruhan, dashboard ini menegaskan bahwa Dropout Risk Score dan engagement score merupakan indikator prediktif yang kuat terhadap status kelulusan. Pemantauan terhadap metrik-metrik ini secara berkala dapat membantu institusi dalam menyusun kebijakan retensi yang proaktif dan berbasis data.
 
 ## Rekomendasi Action Items
 
